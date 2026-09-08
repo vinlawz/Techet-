@@ -1,0 +1,215 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  CUSTOMER
+  ORGANIZER
+  ADMIN
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  UNPUBLISHED
+  CANCELLED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+  CANCELLED
+}
+
+enum PaymentProvider {
+  MPESA
+  CARD
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+enum TicketStatus {
+  VALID
+  USED
+  VOID
+}
+
+model User {
+  id           String    @id @default(cuid())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         Role      @default(CUSTOMER)
+  phone        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  organizer  Organizer?
+  orders     Order[]
+  auditLogs  AuditLog[]
+}
+
+// One-to-one profile for users who publish events
+model Organizer {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
+  displayName String
+  bio         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  events Event[]
+}
+
+model Venue {
+  id        String   @id @default(cuid())
+  name      String
+  address   String
+  city      String
+  country   String   @default("Kenya")
+  createdAt DateTime @default(now())
+
+  events Event[]
+}
+
+model Event {
+  id          String      @id @default(cuid())
+  organizerId String
+  organizer   Organizer   @relation(fields: [organizerId], references: [id])
+  venueId     String?
+  venue       Venue?      @relation(fields: [venueId], references: [id])
+  title       String
+  slug        String      @unique
+  description String
+  category    String
+  imageUrl    String?
+  startsAt    DateTime
+  endsAt      DateTime
+  status      EventStatus @default(DRAFT)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  ticketTypes TicketType[]
+  orders      Order[]
+
+  @@index([status, startsAt])
+}
+
+model TicketType {
+  id        String   @id @default(cuid())
+  eventId   String
+  event     Event    @relation(fields: [eventId], references: [id])
+  name      String
+  price     Decimal  @db.Decimal(10, 2)
+  quantity  Int
+  sold      Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  orderItems OrderItem[]
+  tickets    Ticket[]
+}
+
+model Order {
+  id          String      @id @default(cuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  eventId     String
+  event       Event       @relation(fields: [eventId], references: [id])
+  status      OrderStatus @default(PENDING)
+  totalAmount Decimal     @db.Decimal(10, 2)
+  promoCodeId String?
+  promoCode   PromoCode?  @relation(fields: [promoCodeId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  items    OrderItem[]
+  payments Payment[]
+  tickets  Ticket[]
+}
+
+model OrderItem {
+  id           String     @id @default(cuid())
+  orderId      String
+  order        Order      @relation(fields: [orderId], references: [id])
+  ticketTypeId String
+  ticketType   TicketType @relation(fields: [ticketTypeId], references: [id])
+  quantity     Int
+  unitPrice    Decimal    @db.Decimal(10, 2)
+}
+
+model Payment {
+  id            String          @id @default(cuid())
+  orderId       String
+  order         Order           @relation(fields: [orderId], references: [id])
+  provider      PaymentProvider
+  status        PaymentStatus   @default(PENDING)
+  amount        Decimal         @db.Decimal(10, 2)
+  providerRef   String?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  refunds Refund[]
+}
+
+model Refund {
+  id        String   @id @default(cuid())
+  paymentId String
+  payment   Payment  @relation(fields: [paymentId], references: [id])
+  amount    Decimal  @db.Decimal(10, 2)
+  reason    String?
+  createdAt DateTime @default(now())
+}
+
+model Ticket {
+  id           String       @id @default(cuid())
+  orderId      String
+  order        Order        @relation(fields: [orderId], references: [id])
+  ticketTypeId String
+  ticketType   TicketType   @relation(fields: [ticketTypeId], references: [id])
+  qrCode       String       @unique
+  status       TicketStatus @default(VALID)
+  checkedInAt  DateTime?
+  createdAt    DateTime     @default(now())
+}
+
+model PromoCode {
+  id             String   @id @default(cuid())
+  code           String   @unique
+  discountPct    Int
+  maxRedemptions Int?
+  redeemedCount  Int      @default(0)
+  expiresAt      DateTime?
+  createdAt      DateTime @default(now())
+
+  orders Order[]
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
