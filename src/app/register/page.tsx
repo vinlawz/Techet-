@@ -1,15 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const asOrganizer = searchParams.get("role") === "organizer";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [bio, setBio] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -21,7 +26,9 @@ export default function RegisterPage() {
     const res = await fetch("/api/auth/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify(
+        asOrganizer ? { name, email, password, displayName, bio } : { name, email, password },
+      ),
     });
 
     const data = await res.json();
@@ -40,19 +47,25 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push("/");
+    router.push(asOrganizer ? "/dashboard" : "/");
     router.refresh();
   }
 
   return (
     <main className="flex flex-1 items-center justify-center px-6 py-24">
       <div className="w-full max-w-sm rounded-2xl border border-border bg-surface p-8">
-        <h1 className="text-2xl font-bold tracking-tight">Create your account</h1>
-        <p className="mt-2 text-sm text-muted">Book tickets to events in seconds.</p>
+        <h1 className="text-2xl font-bold tracking-tight">
+          {asOrganizer ? "Create your organizer account" : "Create your account"}
+        </h1>
+        <p className="mt-2 text-sm text-muted">
+          {asOrganizer
+            ? "Set up your organizer profile and start listing events."
+            : "Book tickets to events in seconds."}
+        </p>
 
         <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
           <label className="flex flex-col gap-1.5 text-sm">
-            Name
+            Your name
             <input
               required
               value={name}
@@ -84,6 +97,30 @@ export default function RegisterPage() {
             />
           </label>
 
+          {asOrganizer && (
+            <>
+              <label className="flex flex-col gap-1.5 text-sm">
+                Organizer / brand name
+                <input
+                  required
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="e.g. Techet Collective"
+                  className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-accent"
+                />
+              </label>
+              <label className="flex flex-col gap-1.5 text-sm">
+                Short bio (optional)
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  rows={3}
+                  className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-accent"
+                />
+              </label>
+            </>
+          )}
+
           {error && <p className="text-sm text-red-400">{error}</p>}
 
           <button
@@ -101,7 +138,23 @@ export default function RegisterPage() {
             Log in
           </Link>
         </p>
+        {!asOrganizer && (
+          <p className="mt-2 text-sm text-muted">
+            Hosting an event?{" "}
+            <Link href="/register?role=organizer" className="text-foreground underline underline-offset-4">
+              Sign up as an organizer
+            </Link>
+          </p>
+        )}
       </div>
     </main>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
   );
 }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
+import { CategoryMarquee } from "@/components/site/CategoryMarquee";
 
 const stats = [
   { label: "Events hosted", value: "0" },
@@ -38,27 +39,29 @@ export default function Home() {
             Now onboarding organizers
           </span>
           <h1 className="mt-6 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-            Event ticketing, built for speed and trust.
+            Good people. Great events. One place.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-muted">
-            Techet helps organizers publish events and sell tickets, and gives attendees a fast,
-            secure way to discover, book, and manage their tickets.
+            Find the moments worth showing up for. If you&apos;re hosting, Techet keeps ticketing,
+            payments, check-in, and attendee insights in one clear flow.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
               href="/events"
               className="rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90"
             >
-              Browse events
+              See what&apos;s on
             </Link>
             <Link
               href="/register?role=organizer"
               className="rounded-full border border-border px-6 py-3 text-sm font-semibold transition-colors hover:border-accent-2 hover:text-accent-2"
             >
-              Create an event
+              For organizers
             </Link>
           </div>
         </section>
+
+        <CategoryMarquee />
 
         <section className="border-y border-border bg-surface/60">
           <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-6 py-10 sm:grid-cols-4">

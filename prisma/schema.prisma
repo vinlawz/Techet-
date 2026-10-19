@@ -76,7 +76,17 @@ model Organizer {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  events Event[]
+  events  Event[]
+  payouts Payout[]
+}
+
+model Payout {
+  id          String    @id @default(cuid())
+  organizerId String
+  organizer   Organizer @relation(fields: [organizerId], references: [id])
+  amount      Decimal   @db.Decimal(10, 2)
+  note        String?
+  createdAt   DateTime  @default(now())
 }
 
 model Venue {
@@ -164,6 +174,10 @@ model Payment {
   status        PaymentStatus   @default(PENDING)
   amount        Decimal         @db.Decimal(10, 2)
   providerRef   String?
+  phone             String?
+  checkoutRequestId String?     @unique
+  mpesaReceipt      String?
+  failureReason     String?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 

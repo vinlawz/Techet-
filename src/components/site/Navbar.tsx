@@ -3,12 +3,14 @@ import { auth, signOut } from "@/lib/auth";
 
 const links = [
   { href: "/events", label: "Events" },
-  { href: "/organizers", label: "For Organizers" },
+  { href: "/register?role=organizer", label: "For Organizers" },
   { href: "/about", label: "About" },
 ];
 
 export async function Navbar() {
   const session = await auth();
+  const role = session?.user?.role;
+  const isOrganizer = role === "ORGANIZER" || role === "ADMIN";
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/80 bg-background/80 backdrop-blur">
@@ -29,6 +31,22 @@ export async function Navbar() {
         <div className="flex items-center gap-3">
           {session?.user ? (
             <>
+              {isOrganizer && (
+                <Link
+                  href="/dashboard"
+                  className="hidden text-sm text-muted transition-colors hover:text-foreground sm:inline"
+                >
+                  Dashboard
+                </Link>
+              )}
+              {role === "ADMIN" && (
+                <Link
+                  href="/admin/events"
+                  className="hidden text-sm text-muted transition-colors hover:text-foreground sm:inline"
+                >
+                  Moderation
+                </Link>
+              )}
               <Link
                 href="/bookings"
                 className="hidden text-sm text-muted transition-colors hover:text-foreground sm:inline"
