@@ -69,6 +69,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
         category: data.category,
         startsAt,
         endsAt,
+        externalUrl: data.externalUrl || null,
         ...(event.venueId
           ? {}
           : {

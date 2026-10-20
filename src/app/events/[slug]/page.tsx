@@ -4,7 +4,7 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { prisma } from "@/lib/prisma";
 import { CheckoutPanel } from "@/components/checkout/CheckoutPanel";
-import { formatEventDate, formatEventTime } from "@/lib/format";
+import { formatEventDate, formatEventTime, formatPrice } from "@/lib/format";
 
 export default async function EventDetailPage({ params }: PageProps<"/events/[slug]">) {
   const { slug } = await params;
@@ -67,17 +67,42 @@ export default async function EventDetailPage({ params }: PageProps<"/events/[sl
             </div>
 
             <aside className="h-fit rounded-2xl border border-border bg-surface p-6">
-              <h2 className="text-lg font-semibold">Lock in your spot</h2>
-              <CheckoutPanel
-                eventId={event.id}
-                slug={event.slug}
-                tickets={event.ticketTypes.map((t) => ({
-                  id: t.id,
-                  name: t.name,
-                  price: t.price.toString(),
-                  remaining: t.quantity - t.sold,
-                }))}
-              />
+              {event.externalUrl ? (
+                <>
+                  <h2 className="text-lg font-semibold">Get tickets</h2>
+                  <p className="mt-2 text-sm text-muted">
+                    Tickets for this event are sold by {event.organizer.displayName} on another
+                    platform. You&apos;ll be taken there to complete your booking.
+                  </p>
+                  {event.ticketTypes.length > 0 && (
+                    <p className="mt-3 text-sm font-semibold text-accent-2">
+                      From {formatPrice(event.ticketTypes[0].price.toString())}
+                    </p>
+                  )}
+                  <a
+                    href={event.externalUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 block w-full rounded-full bg-accent px-5 py-2.5 text-center text-sm font-semibold text-background transition-opacity hover:opacity-90"
+                  >
+                    Get tickets
+                  </a>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-lg font-semibold">Lock in your spot</h2>
+                  <CheckoutPanel
+                    eventId={event.id}
+                    slug={event.slug}
+                    tickets={event.ticketTypes.map((t) => ({
+                      id: t.id,
+                      name: t.name,
+                      price: t.price.toString(),
+                      remaining: t.quantity - t.sold,
+                    }))}
+                  />
+                </>
+              )}
             </aside>
           </div>
         </section>

@@ -42,6 +42,7 @@ export async function POST(request: Request) {
       status: "DRAFT",
       startsAt,
       endsAt,
+      externalUrl: data.externalUrl || null,
       venue: {
         create: { name: data.venueName, address: data.venueAddress, city: data.venueCity },
       },

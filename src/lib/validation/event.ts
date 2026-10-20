@@ -17,6 +17,13 @@ export const eventInputSchema = z.object({
   venueCity: z.string().trim().min(1, "City is required").max(100),
   startsAt: z.string().refine((v) => !Number.isNaN(Date.parse(v)), "Invalid start date"),
   endsAt: z.string().refine((v) => !Number.isNaN(Date.parse(v)), "Invalid end date"),
+  externalUrl: z
+    .string()
+    .trim()
+    .url("Enter a full link, e.g. https://example.com/event")
+    .max(500)
+    .optional()
+    .or(z.literal("")),
   ticketTypes: z.array(ticketTypeInputSchema).min(1, "Add at least one ticket type"),
 });
 

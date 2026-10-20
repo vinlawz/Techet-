@@ -115,6 +115,7 @@ export default async function EditEventPage({ params }: { params: Promise<{ id: 
               venueCity: event.venue?.city ?? "",
               startsAt: toLocalInput(event.startsAt),
               endsAt: toLocalInput(event.endsAt),
+              externalUrl: event.externalUrl ?? "",
               ticketTypes: event.ticketTypes.map((t) => ({
                 id: t.id,
                 name: t.name,

@@ -51,6 +51,7 @@ export async function POST(request: Request) {
     order = await prisma.$transaction(async (tx) => {
       const event = await tx.event.findUnique({ where: { id: eventId } });
       if (!event || event.status !== "PUBLISHED") throw new CheckoutError("Event not available.");
+      if (event.externalUrl) throw new CheckoutError("This event is ticketed on another platform.");
 
       let total = 0;
       const orderItems: { ticketTypeId: string; quantity: number; unitPrice: number }[] = [];

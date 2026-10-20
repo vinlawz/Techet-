@@ -22,6 +22,7 @@ export type EventFormValues = {
   venueCity: string;
   startsAt: string; // datetime-local value
   endsAt: string;
+  externalUrl: string;
   ticketTypes: EventFormTicketType[];
 };
 
@@ -34,6 +35,7 @@ export const emptyEventForm: EventFormValues = {
   venueCity: "Nairobi",
   startsAt: "",
   endsAt: "",
+  externalUrl: "",
   ticketTypes: [{ name: "General", price: 0, quantity: 50 }],
 };
 
@@ -201,6 +203,21 @@ export function EventForm({
           />
         </label>
       </div>
+
+      <label className="flex flex-col gap-1.5 text-sm">
+        External ticket link (optional)
+        <input
+          type="url"
+          placeholder="https://example.com/your-event"
+          value={values.externalUrl}
+          onChange={(e) => update("externalUrl", e.target.value)}
+          className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-accent"
+        />
+        <span className="text-xs text-muted">
+          If tickets are sold elsewhere (e.g. another platform), add the link here — Techet will
+          list the event for discovery and send buyers there instead of its own checkout.
+        </span>
+      </label>
 
       <div>
         <div className="flex items-center justify-between">

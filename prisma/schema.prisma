@@ -111,6 +111,8 @@ model Event {
   description String
   category    String
   imageUrl    String?
+  // When set, tickets are sold on a third-party platform; Techet only lists the event for discovery.
+  externalUrl String?
   startsAt    DateTime
   endsAt      DateTime
   status      EventStatus @default(DRAFT)
