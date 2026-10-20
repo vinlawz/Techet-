@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
@@ -39,7 +39,7 @@ export default function LoginPage() {
     <main className="flex flex-1 items-center justify-center px-6 py-24">
       <div className="w-full max-w-sm rounded-2xl border border-border bg-surface p-8">
         <h1 className="text-2xl font-bold tracking-tight">Log in</h1>
-        <p className="mt-2 text-sm text-muted">Welcome back to Techet.</p>
+        <p className="mt-2 text-sm text-muted">Karibu tena — welcome back to Techet.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">
           <label className="flex flex-col gap-1.5 text-sm">
@@ -83,5 +83,13 @@ export default function LoginPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
   );
 }

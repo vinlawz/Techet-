@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { EVENT_CATEGORIES } from "@/lib/categories";
+import { toLocalInput } from "@/lib/format";
 
 export type EventFormTicketType = {
   id?: string;
@@ -24,13 +25,6 @@ export type EventFormValues = {
   ticketTypes: EventFormTicketType[];
 };
 
-function toLocalInput(date: Date): string {
-  const pad = (n: number) => String(n).padStart(2, "0");
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(
-    date.getHours(),
-  )}:${pad(date.getMinutes())}`;
-}
-
 export const emptyEventForm: EventFormValues = {
   title: "",
   description: "",
@@ -42,8 +36,6 @@ export const emptyEventForm: EventFormValues = {
   endsAt: "",
   ticketTypes: [{ name: "General", price: 0, quantity: 50 }],
 };
-
-export { toLocalInput };
 
 export function EventForm({
   mode,
@@ -251,7 +243,7 @@ export function EventForm({
                 <input
                   required
                   type="number"
-                  min={t.sold ?? 1}
+                  min={Math.max(1, t.sold ?? 0)}
                   placeholder="Quantity"
                   value={t.quantity}
                   onChange={(e) => updateTicket(i, { quantity: Number(e.target.value) })}

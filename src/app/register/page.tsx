@@ -59,8 +59,8 @@ function RegisterForm() {
         </h1>
         <p className="mt-2 text-sm text-muted">
           {asOrganizer
-            ? "Set up your organizer profile and start listing events."
-            : "Book tickets to events in seconds."}
+            ? "Set up your organizer profile and start dropping events."
+            : "Sawa, let's get you in — book tickets in seconds."}
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 flex flex-col gap-4">

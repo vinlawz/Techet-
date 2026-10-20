@@ -34,7 +34,7 @@ export function Footer() {
           <div className="col-span-2 sm:col-span-1">
             <span className="font-mono text-lg font-bold tracking-tight">TECHET</span>
             <p className="mt-2 max-w-xs text-sm text-muted">
-              Event ticketing built for speed, precision, and trust.
+              Tickets, payments, check-in — sorted. Built fast, built fair, built for how Kenya turns up.
             </p>
           </div>
           {columns.map((col) => (

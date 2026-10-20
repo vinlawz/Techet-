@@ -22,6 +22,9 @@ export async function POST(request: Request) {
   if (endsAt <= startsAt) {
     return NextResponse.json({ error: "End time must be after the start time." }, { status: 400 });
   }
+  if (startsAt < new Date()) {
+    return NextResponse.json({ error: "Start time can't be in the past." }, { status: 400 });
+  }
 
   const baseSlug = slugify(data.title) || "event";
   let slug = baseSlug;

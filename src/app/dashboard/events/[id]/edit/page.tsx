@@ -4,7 +4,8 @@ import { Navbar } from "@/components/site/Navbar";
 import { Footer } from "@/components/site/Footer";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { EventForm, toLocalInput } from "@/components/organizer/EventForm";
+import { toLocalInput } from "@/lib/format";
+import { EventForm } from "@/components/organizer/EventForm";
 import type { EventStatus } from "@/generated/prisma/client";
 
 async function setEventStatus(eventId: string, next: EventStatus) {

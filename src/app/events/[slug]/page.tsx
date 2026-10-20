@@ -67,7 +67,7 @@ export default async function EventDetailPage({ params }: PageProps<"/events/[sl
             </div>
 
             <aside className="h-fit rounded-2xl border border-border bg-surface p-6">
-              <h2 className="text-lg font-semibold">Tickets</h2>
+              <h2 className="text-lg font-semibold">Lock in your spot</h2>
               <CheckoutPanel
                 eventId={event.id}
                 slug={event.slug}

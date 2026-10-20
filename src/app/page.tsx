@@ -13,19 +13,19 @@ const stats = [
 const features = [
   {
     title: "Checkout in seconds",
-    description: "A fast, mobile-first booking flow so customers complete payment without friction.",
+    description: "Haraka haraka — a mobile-first flow so people pay and lock in their spot before they overthink it.",
   },
   {
-    title: "M-Pesa & card payments",
-    description: "Accept mobile money and card payments with verified, server-side confirmation.",
+    title: "M-Pesa & card, no wahala",
+    description: "M-Pesa, card, whatever's loaded — every payment is confirmed server-side before a ticket drops.",
   },
   {
-    title: "Secure digital tickets",
-    description: "Every ticket ships with a signed QR code that's validated in real time at the door.",
+    title: "Tickets that can't be faked",
+    description: "Every ticket is a signed QR code, scanned live at the door. No screenshots, no plot twists.",
   },
   {
-    title: "Live sales dashboard",
-    description: "Organizers track revenue, remaining inventory, and attendance as it happens.",
+    title: "Numbers in real time",
+    description: "Watch sales, remaining seats, and who's actually walked in — live, as the function happens.",
   },
 ];
 
@@ -36,14 +36,15 @@ export default function Home() {
       <main className="flex-1">
         <section className="mx-auto flex max-w-6xl flex-col items-start px-6 pt-24 pb-20">
           <span className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-accent">
-            Now onboarding organizers
+            Sasa hivi: onboarding organizers
           </span>
           <h1 className="mt-6 max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-            Good people. Great events. One place.
+            Your next <span className="bg-gradient-to-r from-accent to-accent-2 bg-clip-text text-transparent">function</span>, already booked.
           </h1>
           <p className="mt-6 max-w-xl text-lg text-muted">
-            Find the moments worth showing up for. If you&apos;re hosting, Techet keeps ticketing,
-            payments, check-in, and attendee insights in one clear flow.
+            Gigs, raves, pop-ups, day parties — if it&apos;s worth leaving the house for, it&apos;s on
+            Techet. Hosting one? We handle ticketing, payments, check-in, and the numbers so you can
+            focus on the vibe.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
@@ -56,7 +57,7 @@ export default function Home() {
               href="/register?role=organizer"
               className="rounded-full border border-border px-6 py-3 text-sm font-semibold transition-colors hover:border-accent-2 hover:text-accent-2"
             >
-              For organizers
+              Host your own
             </Link>
           </div>
         </section>
@@ -75,7 +76,7 @@ export default function Home() {
         </section>
 
         <section className="mx-auto max-w-6xl px-6 py-20">
-          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Why organizers choose Techet</h2>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">Why organizers ride with Techet</h2>
           <div className="mt-10 grid gap-6 sm:grid-cols-2">
             {features.map((feature) => (
               <div key={feature.title} className="rounded-2xl border border-border bg-surface p-6">
@@ -89,16 +90,16 @@ export default function Home() {
         <section className="mx-auto max-w-6xl px-6 pb-24">
           <div className="flex flex-col items-start justify-between gap-6 rounded-2xl border border-border bg-surface p-10 sm:flex-row sm:items-center">
             <div>
-              <h2 className="text-2xl font-bold tracking-tight">Ready to sell your first ticket?</h2>
+              <h2 className="text-2xl font-bold tracking-tight">Ready to drop your first event?</h2>
               <p className="mt-2 max-w-md text-sm text-muted">
-                Set up your event page, add ticket types, and start selling in minutes.
+                Set up your page, add ticket types, and go live in minutes — sawa kabisa, no setup fees.
               </p>
             </div>
             <Link
               href="/register?role=organizer"
               className="whitespace-nowrap rounded-full bg-accent px-6 py-3 text-sm font-semibold text-background transition-opacity hover:opacity-90"
             >
-              Get started free
+              Start free, no cap
             </Link>
           </div>
         </section>

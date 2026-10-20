@@ -26,10 +26,10 @@ export default async function EventsPage({ searchParams }: PageProps<"/events">)
       <Navbar />
       <main className="flex-1">
         <section className="mx-auto max-w-6xl px-6 pt-16 pb-8">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">What&apos;s on</h1>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">What&apos;s poppin&apos;</h1>
           <p className="mt-3 max-w-xl text-muted">
-            Browse upcoming events from organizers across Nairobi and beyond. Filter by category to
-            find what feels like yours.
+            Every gig, rave, pop-up, and side hustle mixer from organizers across Nairobi and beyond —
+            in one feed. Filter by category, find your scene, pull up.
           </p>
         </section>
 

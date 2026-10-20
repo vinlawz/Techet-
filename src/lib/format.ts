@@ -19,6 +19,14 @@ export function formatPrice(amount: number | string): string {
   return currencyFormatter.format(Number(amount));
 }
 
+// Formats a Date as a "YYYY-MM-DDTHH:mm" value for a <input type="datetime-local">.
+export function toLocalInput(date: Date): string {
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(
+    date.getHours(),
+  )}:${pad(date.getMinutes())}`;
+}
+
 export function formatEventDate(date: Date): string {
   return dateFormatter.format(date);
 }

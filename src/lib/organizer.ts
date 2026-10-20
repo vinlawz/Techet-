@@ -17,7 +17,7 @@ export async function requireOrganizer(): Promise<
   }
 
   const organizer = await prisma.organizer.findUnique({ where: { userId: session.user.id } });
-  if (!organizer) {
+  if (!organizer && role !== "ADMIN") {
     return {
       ok: false,
       status: 403,
@@ -25,5 +25,5 @@ export async function requireOrganizer(): Promise<
     };
   }
 
-  return { ok: true, organizerId: organizer.id, isAdmin: role === "ADMIN" };
+  return { ok: true, organizerId: organizer?.id ?? "", isAdmin: role === "ADMIN" };
 }

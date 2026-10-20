@@ -44,7 +44,7 @@ export function EventCard({ event }: { event: EventCardData }) {
           </p>
         )}
         <div className="mt-3 text-sm font-semibold text-accent-2">
-          {event.fromPrice !== null ? `From ${formatPrice(event.fromPrice)}` : "Tickets soon"}
+          {event.fromPrice !== null ? `From ${formatPrice(event.fromPrice)}` : "Dropping soon"}
         </div>
       </div>
     </Link>
